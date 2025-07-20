@@ -9,7 +9,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseTest {
@@ -39,10 +41,12 @@ public class BaseTest {
     @AfterEach
     public void afterTest() {
         try {
+            // Создаем уникальное имя файла
+            String timestamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date());
             // Создаем скриншот
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(screenshot,
-                    new File("target/screenshots/test_" + System.currentTimeMillis() + ".png"));
+                    new File("target" + File.separator + "screenshots" + File.separator + "test_" + timestamp + ".png"));
 
             // Пауза 2 секунды
             Thread.sleep(2000);
